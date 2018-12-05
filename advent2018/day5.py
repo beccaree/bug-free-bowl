@@ -30,6 +30,7 @@ for n in range(26):
 	length = reactPolymer(testPolymer)
 	if length < minX:
 		minX = length
+	print(n)
 
 print(reactPolymer(polymer))
 print(minX)

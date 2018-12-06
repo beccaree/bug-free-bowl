@@ -19,15 +19,18 @@ for line in sys.stdin:
 		maxY = point[1]
 
 numPoints = len(points)
-grid = [[0 for ix in range(maxX + 2)] for iy in range(maxY + 2)]
+grid = [[0 for ix in range(maxX + 1)] for iy in range(maxY + 1)]
 areaForPoint = {}
 
-print(grid)
+total = 0
 
 for x in range(maxX):
 	for y in range(maxY):
 		minDist = maxX + maxY
 		bestPoint = -1
+
+		sumDist = 0
+
 		for i, point in enumerate(points):
 			dist = abs(x - point[0]) + abs(y - point[1])
 			if dist < minDist:
@@ -35,12 +38,28 @@ for x in range(maxX):
 				bestPoint = i
 			elif dist == minDist:
 				bestPoint = -1
+
+			sumDist += dist
 		
-		grid[x][y] = bestPoint
+		grid[y][x] = bestPoint
 		if bestPoint in areaForPoint:
 			areaForPoint[bestPoint] += 1
 		else:
 			areaForPoint[bestPoint] = 1
+
+		if (sumDist < 10000):
+			total += 1
+
+for x in range(maxX):
+	infinite = grid[0][x]
+	areaForPoint.pop(infinite, 0)
+	infinite = grid[maxY][x]
+	areaForPoint.pop(infinite, 0)
+for y in range(maxY):
+	infinite = grid[y][0]
+	areaForPoint.pop(infinite, 0)
+	infinite = grid[y][maxX]
+	areaForPoint.pop(infinite, 0)
 
 maxArea = 0
 for point in areaForPoint:
@@ -49,4 +68,6 @@ for point in areaForPoint:
 		maxArea = area
 
 print(maxArea)
+print(total)
+
 print("done")

@@ -24,8 +24,8 @@ areaForPoint = {}
 
 total = 0
 
-for x in range(maxX):
-	for y in range(maxY):
+for x in range(maxX-1):
+	for y in range(maxY-1):
 		minDist = maxX + maxY
 		bestPoint = -1
 
@@ -50,12 +50,12 @@ for x in range(maxX):
 		if (sumDist < 10000):
 			total += 1
 
-for x in range(maxX):
+for x in range(maxX+1):
 	infinite = grid[0][x]
 	areaForPoint.pop(infinite, 0)
 	infinite = grid[maxY][x]
 	areaForPoint.pop(infinite, 0)
-for y in range(maxY):
+for y in range(maxY+1):
 	infinite = grid[y][0]
 	areaForPoint.pop(infinite, 0)
 	infinite = grid[y][maxX]
@@ -66,7 +66,9 @@ for point in areaForPoint:
 	area = areaForPoint[point]
 	if area > maxArea:
 		maxArea = area
-
+		
+print(areaForPoint)
+# took second biggest
 print(maxArea)
 print(total)
 

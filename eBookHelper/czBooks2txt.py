@@ -1,10 +1,14 @@
+import sys
 import requests
 from bs4 import BeautifulSoup
+from tqdm import tqdm
 
-# thanks >> https://stackoverflow.com/questions/75413623/python-web-scrapping-get-html-links-from-within-a-specific-div-and-from-sub-pag
+if len(sys.argv) != 3:
+    print('error: command should look like > python czbooks2txt.py [czBooks url] [target file]')
+    exit()
 
-# input: title page url
-targetUrl = 'https://czbooks.net/n/c65cll'
+targetUrl = sys.argv[1]
+writeTo = sys.argv[2]
 
 page = requests.get(targetUrl)
 page.raise_for_status()
@@ -16,13 +20,12 @@ title = infoSection.find('span', class_='title').text.strip()
 author = infoSection.find('span', class_='author').find('a').text.strip()
 print(title + ' by ' + author)
 
-# write chapters to files
+# write chapters to file
 chapters = soup.find('ul', id='chapter-list')
 assert chapters, 'chapters not found'
 
-with open('book.txt', 'w', encoding='utf-8') as f:
-
-    for c in chapters.find_all('a', href=True):
+with open(writeTo, 'w', encoding='utf-8') as f:
+    for c in tqdm(chapters.find_all('a', href=True)):
         cTitle = c.text.strip()
         cUrl = c['href']
 
@@ -35,4 +38,4 @@ with open('book.txt', 'w', encoding='utf-8') as f:
         f.write(contentDiv.text)
         f.write('\n\n')
 
-print('find ' + title + ' at book.txt')
+print('Done!')

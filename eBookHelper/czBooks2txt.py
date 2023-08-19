@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from tqdm import tqdm
 
 if len(sys.argv) != 2:
-    print('error: command format python czbooks2txt.py [czBooks url]')
+    print('command format error: python czbooks2txt.py [czBooks url]')
     exit()
 
 targetUrl = sys.argv[1]
@@ -18,8 +18,8 @@ infoSection = soup.find('div', class_='info')
 title = infoSection.find('span', class_='title').text.strip()
 author = infoSection.find('span', class_='author').find('a').text.strip()
 fileName = title + 'by' + author + '.txt'
+print(fileName)
 
-# write chapters to file
 chapters = soup.find('ul', id='chapter-list')
 assert chapters, 'chapters not found'
 
@@ -37,5 +37,4 @@ with open(fileName, 'w', encoding='utf-8') as f:
         f.write(contentDiv.text)
         f.write('\n\n')
 
-print(fileName)
 print('Done!')
